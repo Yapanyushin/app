@@ -1,0 +1,17 @@
+sudo: true
+language: android
+android:
+  components:
+  - tools
+  - platform-tools
+  - build-tools-23.0.3
+  - android-23
+  - extra-android-m2repository
+  - sys-img-armeabi-v7a-android-23
+
+before_install:
+ - chmod +x gradlew
+
+script:
+# run all the local unit tests of app module
+  - ./gradlew test build
