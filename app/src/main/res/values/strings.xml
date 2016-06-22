@@ -1,9 +1,15 @@
 <resources>
-    <string name="app_name">app</string>
+    <string name="app_name">Billbalancer</string>
     <string name="title_activity_main">MainActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="bills_title">My Bills</string>
+    <string name="title_activity_bill_list">BillListActivity</string>
+
+    <string name="bill_name_input">Bill name</string>
+    <string name="bill_total_input">Total</string>
+    <string name="bill_date_input">Date</string>
 </resources>

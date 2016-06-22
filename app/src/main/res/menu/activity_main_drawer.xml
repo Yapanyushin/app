@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_bills"
-            android:title="My Bills" />
+            android:title="@string/bills_title" />
 
     </group>
 </menu>

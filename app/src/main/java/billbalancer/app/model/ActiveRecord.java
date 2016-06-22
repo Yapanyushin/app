@@ -3,24 +3,26 @@ package billbalancer.app.model;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.Date;
+import java.util.UUID;
+
 import billbalancer.app.utils.ClassUtil;
 
 public class ActiveRecord {
-    private static String mTableName = new ClassUtil().getCurrentClassName();
-    private static final String mDatabaseName = "billbalancer";
-    private SQLiteDatabase mDatabase;
-    protected Integer id;
+    protected UUID mId;
+    protected Date mCreatedAt;
 
-    public void ActiveRecord(){
-        mDatabase = getDatabase();
+    public ActiveRecord(){
+        mId = UUID.randomUUID();
+        mCreatedAt = new Date();
     }
 
-    public static ActiveRecord find(){
-        return new ActiveRecord(); //
+    public UUID getId(){
+        return mId;
     }
 
-    private SQLiteDatabase getDatabase(){
-        return SQLiteDatabase.openOrCreateDatabase(mDatabaseName, null, null);
+    public Date getCreatedAt(){
+        return mCreatedAt;
     }
 
 }
