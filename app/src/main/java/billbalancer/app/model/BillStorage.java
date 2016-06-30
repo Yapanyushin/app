@@ -1,6 +1,7 @@
 package billbalancer.app.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +13,12 @@ public class BillStorage {
 
     private BillStorage(Context context){
         mBills = new ArrayList<>();
-        generateBills();
+
     }
 
     public static BillStorage getInstance(Context context){
         if (instance == null) {
+
             instance = new BillStorage(context);
         }
         return instance;
@@ -26,6 +28,16 @@ public class BillStorage {
         return mBills;
     }
 
+    public void addBill(Bill bill) {
+        mBills.add(bill);
+    }
+
+    public void removeBill(Bill bill) {
+        Log.d(BillStorage.class.getSimpleName(), String.valueOf(mBills.size()));
+        mBills.remove(bill);
+        Log.d(BillStorage.class.getSimpleName(), String.valueOf(mBills.size()));
+    }
+
     public Bill getBill(UUID id){
         for (Bill bill : mBills){
             if (bill.getId().equals(id)){
@@ -33,14 +45,5 @@ public class BillStorage {
             }
         }
         return null;
-    }
-
-    private void generateBills(){
-        for (int i = 0; i < 100; i++) {
-            Bill bill = new Bill();
-            bill.setName("Bill #" + i);
-            bill.setTotal(100.0);
-            mBills.add(bill);
-        }
     }
 }

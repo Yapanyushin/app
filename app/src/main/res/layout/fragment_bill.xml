@@ -1,27 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:weightSum="1">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bill_save_button"
+            android:layout_gravity="center|right"
+            android:src="@mipmap/ic_done_white_48dp"
+            android:background="@color/colorPrimary"
+            android:contentDescription="@string/bill_save_button"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bill_remove_button"
+            android:src="@mipmap/ic_delete_white_48dp"
+            android:layout_gravity="center|right"
+            android:contentDescription="@string/add_button"
+            android:adjustViewBounds="false"
+            android:layout_margin="12dp"
+            android:background="@color/colorPrimary"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+    </LinearLayout>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bill_name"
-        android:text="@string/bill_name_input" />
+        android:inputType="text"
+        android:hint="@string/bill_name_input"/>
 
-    <EditText
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:id="@+id/bill_total"
-        android:text="@string/bill_total_input" />
+        android:layout_gravity="center_horizontal">
+
+        <EditText
+            android:layout_width="111dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/bill_total"
+            android:hint="@string/bill_total_input"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:id="@+id/bill_create_date"
+            android:layout_weight="1"
+            android:hint="@string/bill_create_date"
+            android:editable="false"
+            android:clickable="true"
+            android:enabled="true"
+            android:focusable="true"/>
+
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:id="@+id/bill_created_at"
-        android:text="@string/bill_date_input" />
+        android:text="@string/bill_add_part"
+        android:id="@+id/bill_add_part"/>
+
 </LinearLayout>

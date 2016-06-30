@@ -12,4 +12,8 @@
     <string name="bill_name_input">Bill name</string>
     <string name="bill_total_input">Total</string>
     <string name="bill_date_input">Date</string>
+    <string name="bill_add_part">Add participant</string>
+    <string name="bill_create_date">Create Date</string>
+    <string name="add_button">add button</string>
+    <string name="bill_save_button">bill save button</string>
 </resources>
