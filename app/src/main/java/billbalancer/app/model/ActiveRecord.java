@@ -8,21 +8,15 @@ import java.util.UUID;
 
 import billbalancer.app.utils.ClassUtil;
 
-public class ActiveRecord {
+public class ActiveRecord extends Object {
     protected UUID mId;
-    protected Date mCreatedAt;
 
     public ActiveRecord(){
         mId = UUID.randomUUID();
-        mCreatedAt = new Date();
     }
 
     public UUID getId(){
         return mId;
-    }
-
-    public Date getCreatedAt(){
-        return mCreatedAt;
     }
 
 }

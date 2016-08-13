@@ -2,9 +2,11 @@ package billbalancer.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,21 +19,33 @@ import billbalancer.app.model.BillStorage;
 
 
 public class BillListFragment extends Fragment{
+
+
     private RecyclerView mBillRecyclerView;
     private BillAdapter mAdapter;
+    private Bill mBill;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bill_list, container, false);
 
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBill = new Bill();
+                Intent intent = BillActivity.updateBillIntent(view.getContext(), mBill, true);
+                startActivity(intent);
+
+            }
+        });
         mBillRecyclerView = (RecyclerView) view.findViewById(R.id.bill_recycler_view);
         mBillRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         updateUI();
-
         return view;
     }
+
 
     private void updateUI(){
         BillStorage storage = BillStorage.getInstance(getActivity());
@@ -61,12 +75,11 @@ public class BillListFragment extends Fragment{
             mBill = bill;
             mBillNameView.setText(bill.getName());
             mBillTotalView.setText(bill.getTotal().toString());
-            mBillDateView.setText(bill.getCreatedAt().toString());
         }
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), BillActivity.class);
+            Intent intent = BillActivity.updateBillIntent(v.getContext(), mBill, false);
             startActivity(intent);
         }
     }
