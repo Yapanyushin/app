@@ -6,7 +6,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +14,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import billbalancer.app.model.Bill;
-import billbalancer.app.model.BillStorage;
+import billbalancer.app.model.Model;
+import billbalancer.app.model.repository.BillRepository;
 
 
-public class BillListFragment extends Fragment{
-
+public class BillListFragment extends Fragment {
 
     private RecyclerView mBillRecyclerView;
     private BillAdapter mAdapter;
@@ -30,12 +29,12 @@ public class BillListFragment extends Fragment{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bill_list, container, false);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.add_bill);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mBill = new Bill();
-                Intent intent = BillActivity.updateBillIntent(view.getContext(), mBill, true);
+                Intent intent = BillActivity.getBillActivityIntent(view.getContext(), mBill, true);
                 startActivity(intent);
 
             }
@@ -46,13 +45,23 @@ public class BillListFragment extends Fragment{
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
 
-    private void updateUI(){
-        BillStorage storage = BillStorage.getInstance(getActivity());
-        List<Bill> bills = storage.getBills();
+    private void updateUI() {
+        BillRepository repository = (BillRepository) BillRepository.getInstance(getActivity());
+        List<Model> bills = repository.getAll();
 
-        mAdapter = new BillAdapter(bills);
-        mBillRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new BillAdapter(bills);
+            mBillRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.setBills(bills);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private class BillHolder extends RecyclerView.ViewHolder
@@ -71,23 +80,23 @@ public class BillListFragment extends Fragment{
             mBillDateView = (TextView) itemView.findViewById(R.id.list_item_bill_date);
         }
 
-        public void bindBill(Bill bill){
+        public void bindBill(Bill bill) {
             mBill = bill;
-            mBillNameView.setText(bill.getName());
+            mBillNameView.setText(bill.getTitle());
             mBillTotalView.setText(bill.getTotal().toString());
         }
 
         @Override
         public void onClick(View v) {
-            Intent intent = BillActivity.updateBillIntent(v.getContext(), mBill, false);
+            Intent intent = BillActivity.getBillActivityIntent(v.getContext(), mBill, false);
             startActivity(intent);
         }
     }
 
     private class BillAdapter extends RecyclerView.Adapter<BillHolder> {
-        private List<Bill> mBills;
+        private List<Model> mBills;
 
-        public BillAdapter(List<Bill> bills) {
+        public BillAdapter(List<Model> bills) {
             mBills = bills;
         }
 
@@ -101,13 +110,17 @@ public class BillListFragment extends Fragment{
 
         @Override
         public void onBindViewHolder(BillHolder holder, int position) {
-            Bill bill = mBills.get(position);
+            Bill bill = (Bill) mBills.get(position);
             holder.bindBill(bill);
         }
 
         @Override
         public int getItemCount() {
             return mBills.size();
+        }
+
+        public void setBills(List<Model> bills) {
+            mBills = bills;
         }
     }
 }

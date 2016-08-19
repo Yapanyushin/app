@@ -1,23 +1,25 @@
 package billbalancer.app.model;
 
-
-import android.util.Log;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Bill extends ActiveRecord implements Serializable {
-    private String mName = "Default(Whiskey and whores)!";
-    private Double mTips;
+public class Bill extends Model {
+    private String mTitle = "Default(Whiskey and whores)!";
     private Double mTotal;
     private ArrayList<Part> mParts = new ArrayList<>();
     private Date mCreateDate = new Date();
 
+    public Bill(Integer id) {
+        super(id);
+    }
+
     @Override
     public boolean equals(Object other) {
-        Bill otherBill = (Bill) other;
-        return this.mId == otherBill.getId();
+        return this.getId() != null &&
+                other instanceof Bill &&
+                this.getId().equals(
+                        ((Bill) other).getId()
+                );
     }
 
     public Date getCreateDate() {
@@ -28,12 +30,16 @@ public class Bill extends ActiveRecord implements Serializable {
         mCreateDate = createDate;
     }
 
-    public String getName() {
-        return mName;
+    public Bill() {
+        super();
     }
 
-    public void setName(String name) {
-        mName = name;
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
     public void setTotal(Double total) {

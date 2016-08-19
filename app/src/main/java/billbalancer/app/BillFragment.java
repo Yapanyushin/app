@@ -2,12 +2,10 @@ package billbalancer.app;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-
 import billbalancer.app.model.Bill;
-import billbalancer.app.model.BillStorage;
+import billbalancer.app.model.repository.BillRepository;
 
 public class BillFragment extends Fragment {
 
-
-    private BillStorage mBillStorage = BillStorage.getInstance(getContext());
+    private BillRepository mBillRepository = (BillRepository) BillRepository.getInstance(getContext());
 
     private Bill mBill;
     private Bill mBillFormData;
@@ -39,9 +35,10 @@ public class BillFragment extends Fragment {
     private Calendar myCalendar = Calendar.getInstance();
 
     public static final String BILL = "com.billbalancer.android.billbalancer.bill";
+
     private final String DEFAULT_DATE_FORMAT = "dd.MM.yy HH:mm";
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle arguments = getArguments();
         mBill = (Bill) arguments.getSerializable(BILL);
         View v = inflater.inflate(R.layout.fragment_bill, container, false);
@@ -61,6 +58,7 @@ public class BillFragment extends Fragment {
         }
 
     };
+
     private TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
 
         @Override
@@ -74,13 +72,10 @@ public class BillFragment extends Fragment {
 
     private void updateLabel() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DEFAULT_DATE_FORMAT, Locale.US);
-
         mCreateDateField.setText(dateFormat.format(myCalendar.getTime()));
     }
 
-
     private void setupListeners(View v) {
-
         setupBillSaveButtonListener(v);
         setupBillRemoveButtonListener(v);
         setupNameFieldListener(v);
@@ -96,21 +91,18 @@ public class BillFragment extends Fragment {
         mTotalField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mBill.setTotal(null);
-                if (s.toString() != null && s.toString().length() > 0) {
+                if (s.toString().length() > 0) {
                     mBill.setTotal(Double.parseDouble(s.toString()));
                 }
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
 
         });
@@ -135,23 +127,21 @@ public class BillFragment extends Fragment {
     private void setupNameFieldListener(View v) {
         mNameField = (EditText) v.findViewById(R.id.bill_name);
         if (mBill.isValid()) {
-            mNameField.setText(mBill.getName());
+            mNameField.setText(mBill.getTitle());
         }
-        mNameField.setHint(mBill.getName());
+        mNameField.setHint(mBill.getTitle());
         mNameField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mBill.setName(s.toString());
+                mBill.setTitle(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
     }
@@ -161,8 +151,10 @@ public class BillFragment extends Fragment {
         mBillSaveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (mBill.isValid()) {
-                    if (!mBillStorage.getBills().contains(mBill)) {
-                        mBillStorage.addBill(mBill);
+                    if (mBillRepository.contains(mBill)) {
+                        mBillRepository.update(mBill);
+                    } else {
+                        mBillRepository.add(mBill);
                     }
                     getActivity().finish();
                 }
@@ -175,7 +167,7 @@ public class BillFragment extends Fragment {
         mBillRemoveButton = (ImageButton) v.findViewById(R.id.bill_remove_button);
         mBillRemoveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mBillStorage.removeBill(mBill);
+                mBillRepository.remove(mBill);
                 getActivity().finish();
             }
         });

@@ -1,15 +1,13 @@
 package billbalancer.app;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import billbalancer.app.model.BillStorage;
+import android.support.v4.app.Fragment;
 
 public class BillListActivity extends SingleFragmentActivity {
 
     protected Fragment createFragment() {
         return new BillListFragment();
     }
-
 
 
     @Override

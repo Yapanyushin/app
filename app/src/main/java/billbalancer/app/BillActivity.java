@@ -5,17 +5,13 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.io.Serializable;
 
 import billbalancer.app.model.Bill;
-import billbalancer.app.model.BillStorage;
 
 public class BillActivity extends FragmentActivity
         implements PartListFragment.OnListFragmentInteractionListener {
-
-    private BillStorage mBillStorage = BillStorage.getInstance(getBaseContext());
 
     private static final String BILL_OBJECT = "com.billbalancer.android.billbalancer.bill_object";
     private static final String BILL_CREATE = "com.billbalancer.android.billbalancer.bill_create";
@@ -30,26 +26,28 @@ public class BillActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill);
-        boolean isBillCreate = getIntent().getBooleanExtra(BILL_CREATE, false);
         boolean isBillUpdate = getIntent().getBooleanExtra(BILL_UPDATE, false);
+
         Bundle bundle = new Bundle();
-        if (isBillCreate) {
-            bundle.putSerializable(BillFragment.BILL, new Bill());
-        }
         if (isBillUpdate) {
             bundle.putSerializable(BillFragment.BILL, getIntent().getSerializableExtra(BILL_OBJECT));
+        }else {
+            bundle.putSerializable(BillFragment.BILL, new Bill());
         }
 
-        BillFragment fragobj = new BillFragment();
-        fragobj.setArguments(bundle);
+        renderFragment(bundle);
+    }
+
+    private void renderFragment(Bundle bundle) {
+        BillFragment fragment = new BillFragment();
+        fragment.setArguments(bundle);
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
-                .replace(R.id.fragment_container, fragobj)
+                .replace(R.id.fragment_container, fragment)
                 .commit();
     }
 
-    public static Intent updateBillIntent(Context packageContext, Serializable bill, boolean isBillCreate) {
-
+    public static Intent getBillActivityIntent(Context packageContext, Serializable bill, boolean isBillCreate) {
         Intent i = new Intent(packageContext, BillActivity.class);
 
         i.putExtra(BILL_OBJECT, bill);
@@ -60,6 +58,5 @@ public class BillActivity extends FragmentActivity
         }
 
         return i;
-
     }
 }
