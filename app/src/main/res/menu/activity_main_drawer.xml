@@ -5,6 +5,9 @@
         <item
             android:id="@+id/nav_bills"
             android:title="@string/bills_title" />
+        <item
+            android:id="@+id/nav_participants"
+            android:title="@string/participants_nav_title" />
 
     </group>
 </menu>

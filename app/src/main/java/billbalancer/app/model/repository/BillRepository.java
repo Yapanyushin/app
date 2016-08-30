@@ -11,6 +11,7 @@ import billbalancer.app.model.Bill;
 import billbalancer.app.model.Model;
 
 public class BillRepository extends Repository {
+    private static BillRepository sInstance;
 
     private BillRepository(Context context) {
         super(context);
@@ -23,12 +24,13 @@ public class BillRepository extends Repository {
         return sInstance;
     }
 
-    public Boolean contains(Bill bill) {
-        return getAll().contains(bill);
+    @Override
+    public boolean contains(Model item) {
+        return getAll().contains(item);
     }
 
     @Override
-    ContentValues getContentValues(Model model) {
+    protected final ContentValues getContentValues(Model model) {
         ContentValues values = new ContentValues();
         Bill bill = (Bill) model;
         values.put(BillTable.Cols.TITLE, bill.getTitle());
@@ -39,17 +41,17 @@ public class BillRepository extends Repository {
     }
 
     @Override
-    String getTableName() {
+    protected final String getTableName() {
         return BillTable.NAME;
     }
 
     @Override
-    String getIdColumnName() {
+    protected final String getIdColumnName() {
         return BillTable.Cols.ID;
     }
 
     @Override
-    ApplicationCursorWrapper createCursorWrapper(Cursor cursor) {
+    protected final ApplicationCursorWrapper createCursorWrapper(Cursor cursor) {
         return new BillCursorWrapper(cursor);
     }
 }

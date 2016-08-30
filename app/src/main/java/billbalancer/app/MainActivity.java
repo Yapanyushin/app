@@ -69,11 +69,17 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_bills) {
-            Intent intent = new Intent(MainActivity.this, BillListActivity.class);
-            startActivity(intent);
+        Intent intent = null;
+        switch (id) {
+            case R.id.nav_bills:
+                intent = new Intent(MainActivity.this, BillListActivity.class);
+                break;
+            case R.id.nav_participants:
+                intent = new Intent(MainActivity.this, ParticipantListActivity.class);
+                break;
         }
+
+        startActivity(intent);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

@@ -1,18 +1,18 @@
 package billbalancer.app;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 
-public class BillListActivity extends SingleFragmentActivity {
+public class ParticipantListActivity extends SingleFragmentActivity {
+
+    @Override
+    protected Fragment createFragment() {
+        return new ParticipantListFragment();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         openFragment();
     }
-
-    protected Fragment createFragment() {
-        return new BillListFragment();
-    }
-
 }
