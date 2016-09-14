@@ -15,15 +15,15 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/bill_save_button"
+            android:id="@+id/item_save_button"
             android:layout_gravity="center|right"
             android:src="@mipmap/ic_done_white_48dp"
             android:background="@color/colorPrimary"
-            android:contentDescription="@string/bill_save_button"/>
+            android:contentDescription="@string/item_save_button"/>
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/bill_remove_button"
+            android:id="@+id/item_remove_button"
             android:src="@mipmap/ic_delete_white_48dp"
             android:layout_gravity="center|right"
             android:contentDescription="@string/add_button"
@@ -36,17 +36,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:orientation="horizontal">
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bill_name"
+            android:inputType="text"
+            android:hint="@string/bill_name_input"/>
     </LinearLayout>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bill_name"
-        android:inputType="text"
-        android:hint="@string/bill_name_input"/>
 
     <LinearLayout
         android:orientation="horizontal"

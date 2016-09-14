@@ -7,4 +7,8 @@ public class Part extends Model {
     private Integer bill_id;
     private Integer participant_id;
 
+    @Override
+    public boolean isValid() {
+        return false;
+    }
 }

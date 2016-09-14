@@ -20,27 +20,22 @@ import java.util.Locale;
 
 import billbalancer.app.model.Bill;
 import billbalancer.app.model.repository.BillRepository;
+import billbalancer.app.model.repository.Repository;
 
-public class BillFragment extends Fragment {
+public class BillFragment extends ListItemFragment {
 
-    private BillRepository mBillRepository = (BillRepository) BillRepository.getInstance(getContext());
-
-    private Bill mBill;
     private Bill mBillFormData;
     private EditText mNameField;
     private EditText mTotalField;
     private EditText mCreateDateField;
-    private ImageButton mBillSaveButton;
-    private ImageButton mBillRemoveButton;
     private Calendar myCalendar = Calendar.getInstance();
 
-    public static final String BILL = "com.billbalancer.android.billbalancer.bill";
 
     private final String DEFAULT_DATE_FORMAT = "dd.MM.yy HH:mm";
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle arguments = getArguments();
-        mBill = (Bill) arguments.getSerializable(BILL);
+        mModel = (Bill) arguments.getSerializable(ListItemActivity.ITEM_OBJECT);
         View v = inflater.inflate(R.layout.fragment_bill, container, false);
         setupListeners(v);
         return v;
@@ -75,9 +70,13 @@ public class BillFragment extends Fragment {
         mCreateDateField.setText(dateFormat.format(myCalendar.getTime()));
     }
 
-    private void setupListeners(View v) {
-        setupBillSaveButtonListener(v);
-        setupBillRemoveButtonListener(v);
+    @Override
+    Repository getRepository() {
+        return  BillRepository.getInstance(getContext());
+    }
+
+    protected void setupListeners(View v) {
+        super.setupListeners(v);
         setupNameFieldListener(v);
         setupDateFieldListener(v);
         setupTotalFieldListener(v);
@@ -85,8 +84,8 @@ public class BillFragment extends Fragment {
 
     private void setupTotalFieldListener(View v) {
         mTotalField = (EditText) v.findViewById(R.id.bill_total);
-        if (mBill.isValid()) {
-            mTotalField.setText(String.valueOf(mBill.getTotal()));
+        if (mModel.isValid()) {
+            mTotalField.setText(String.valueOf(((Bill)mModel).getTotal()));
         }
         mTotalField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -95,9 +94,9 @@ public class BillFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mBill.setTotal(null);
+                ((Bill)mModel).setTotal(null);
                 if (s.toString().length() > 0) {
-                    mBill.setTotal(Double.parseDouble(s.toString()));
+                    ((Bill)mModel).setTotal(Double.parseDouble(s.toString()));
                 }
             }
 
@@ -110,7 +109,7 @@ public class BillFragment extends Fragment {
 
     private void setupDateFieldListener(View v) {
         mCreateDateField = (EditText) v.findViewById(R.id.bill_create_date);
-        myCalendar.setTime(mBill.getCreateDate());
+        myCalendar.setTime(((Bill)mModel).getCreateDate());
         updateLabel();
         mCreateDateField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -126,10 +125,10 @@ public class BillFragment extends Fragment {
 
     private void setupNameFieldListener(View v) {
         mNameField = (EditText) v.findViewById(R.id.bill_name);
-        if (mBill.isValid()) {
-            mNameField.setText(mBill.getTitle());
+        if (mModel.isValid()) {
+            mNameField.setText(((Bill)mModel).getTitle());
         }
-        mNameField.setHint(mBill.getTitle());
+        mNameField.setHint(((Bill)mModel).getTitle());
         mNameField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -137,38 +136,11 @@ public class BillFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mBill.setTitle(s.toString());
+                ((Bill)mModel).setTitle(s.toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-            }
-        });
-    }
-
-    private void setupBillSaveButtonListener(View v) {
-        mBillSaveButton = (ImageButton) v.findViewById(R.id.bill_save_button);
-        mBillSaveButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (mBill.isValid()) {
-                    if (mBillRepository.contains(mBill)) {
-                        mBillRepository.update(mBill);
-                    } else {
-                        mBillRepository.add(mBill);
-                    }
-                    getActivity().finish();
-                }
-            }
-        });
-
-    }
-
-    private void setupBillRemoveButtonListener(View v) {
-        mBillRemoveButton = (ImageButton) v.findViewById(R.id.bill_remove_button);
-        mBillRemoveButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mBillRepository.remove(mBill);
-                getActivity().finish();
             }
         });
     }
