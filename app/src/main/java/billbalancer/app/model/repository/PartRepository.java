@@ -4,15 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import billbalancer.app.db.Schema;
+import billbalancer.app.db.Schema.PartTable;
 import billbalancer.app.db.cursor.ApplicationCursorWrapper;
-import billbalancer.app.db.cursor.BillCursorWrapper;
+import billbalancer.app.db.cursor.PartCursorWrapper;
 import billbalancer.app.model.Model;
 import billbalancer.app.model.Part;
 
-/**
- * Created by lpaniush on 14.09.16.
- */
 public class PartRepository extends Repository {
     private PartRepository(Context context) {
         super(context);
@@ -33,24 +30,24 @@ public class PartRepository extends Repository {
     ContentValues getContentValues(Model model) {
         ContentValues values = new ContentValues();
         Part part = (Part) model;
-        values.put(Schema.PartTable.Cols.DEBIT, part.getDebit());
-        values.put(Schema.PartTable.Cols.CREDIT, part.getCredit());
-        values.put(Schema.PartTable.Cols.BILL_ID, part.getBillId());
+        values.put(PartTable.Cols.DEBIT, part.getDebit());
+        values.put(PartTable.Cols.CREDIT, part.getCredit());
+        values.put(PartTable.Cols.BILL_ID, part.getBillId());
         return values;
     }
 
     @Override
     String getTableName() {
-        return Schema.PartTable.NAME;
+        return PartTable.NAME;
     }
 
     @Override
     String getIdColumnName() {
-        return Schema.PartTable.Cols.ID;
+        return PartTable.Cols.ID;
     }
 
     @Override
     ApplicationCursorWrapper createCursorWrapper(Cursor cursor) {
-        return new BillCursorWrapper(cursor);
+        return new PartCursorWrapper(cursor);
     }
 }
