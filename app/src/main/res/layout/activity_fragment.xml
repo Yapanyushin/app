@@ -23,7 +23,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
-        layout="@layout/content_bill_activity"
+        layout="@layout/content_item_activity"
         android:id="@+id/fragment_container"/>
 
 

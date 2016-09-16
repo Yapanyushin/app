@@ -29,6 +29,6 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
 
     @LayoutRes
     protected int getLayoutResId() {
-        return R.layout.activity_fragment;
+        return R.layout.activity_masterdetail;
     }
 }

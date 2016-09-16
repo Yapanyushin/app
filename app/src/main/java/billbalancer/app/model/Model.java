@@ -2,7 +2,7 @@ package billbalancer.app.model;
 
 import java.io.Serializable;
 
-public class Model extends Object implements Serializable {
+public abstract class Model implements Serializable {
     protected Integer mId;
 
     public Model(Integer id) {
@@ -16,5 +16,6 @@ public class Model extends Object implements Serializable {
         return mId;
     }
 
+    public abstract boolean isValid();
 }
 

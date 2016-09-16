@@ -12,10 +12,8 @@ import billbalancer.app.db.DatabaseHelper;
 import billbalancer.app.db.cursor.ApplicationCursorWrapper;
 import billbalancer.app.model.Model;
 
-class Repository extends AbstractRepository {
-
+public abstract class  Repository extends AbstractRepository {
     protected SQLiteDatabase mDB;
-    protected static Repository sInstance;
 
     protected Repository(Context context) {
         mDB = new DatabaseHelper(context).getWritableDatabase();
@@ -86,21 +84,5 @@ class Repository extends AbstractRepository {
         return models;
     }
 
-
-    // Abstract methods: should be overwritten by subclass
-    ContentValues getContentValues(Model model) {
-        return null;
-    }
-
-    String getTableName() {
-        return null;
-    }
-
-    String getIdColumnName() {
-        return null;
-    }
-
-    ApplicationCursorWrapper createCursorWrapper(Cursor cursor) {
-        return null;
-    }
+    public abstract boolean contains(Model item);
 }

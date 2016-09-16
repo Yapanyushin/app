@@ -34,4 +34,8 @@ public class Part extends Model {
     public void setBillId(Integer billId) {
         mBillId = billId;
     }
+    @Override
+    public boolean isValid() {
+        return false;
+    }
 }
