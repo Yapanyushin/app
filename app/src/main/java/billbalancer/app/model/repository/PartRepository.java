@@ -11,6 +11,8 @@ import billbalancer.app.model.Model;
 import billbalancer.app.model.Part;
 
 public class PartRepository extends Repository {
+    private static PartRepository sInstance;
+
     private PartRepository(Context context) {
         super(context);
     }
@@ -27,7 +29,7 @@ public class PartRepository extends Repository {
     }
 
     @Override
-    ContentValues getContentValues(Model model) {
+    protected ContentValues getContentValues(Model model) {
         ContentValues values = new ContentValues();
         Part part = (Part) model;
         values.put(PartTable.Cols.DEBIT, part.getDebit());
@@ -37,17 +39,22 @@ public class PartRepository extends Repository {
     }
 
     @Override
-    String getTableName() {
+    public boolean contains(Model item) {
+        return getAll().contains(item);
+    }
+
+    @Override
+    protected String getTableName() {
         return PartTable.NAME;
     }
 
     @Override
-    String getIdColumnName() {
+    protected String getIdColumnName() {
         return PartTable.Cols.ID;
     }
 
     @Override
-    ApplicationCursorWrapper createCursorWrapper(Cursor cursor) {
+    protected ApplicationCursorWrapper createCursorWrapper(Cursor cursor) {
         return new PartCursorWrapper(cursor);
     }
 }
